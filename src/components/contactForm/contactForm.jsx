@@ -2,8 +2,9 @@ import { Formik, Field, Form ,ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import { Label, Btn, Title } from './contactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactSlice';
+import { addContact } from 'redux/operations';
 import { nanoid } from 'nanoid';
+import { selectContacts } from 'redux/selectors';
 
 
 
@@ -13,7 +14,7 @@ const formSchema = Yup.object().shape({
     .required('This field is required!'),
 })
 export const ContactForm = () => { 
-  const contacts = useSelector(state => state.contacts.contactList)
+  const contacts = useSelector(selectContacts)
   const dispatch = useDispatch();
  
      const addNewContact = value => {

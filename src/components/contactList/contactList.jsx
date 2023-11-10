@@ -1,20 +1,25 @@
 
 import { List,ListItem, Btn ,Div} from './contactList.styled';
 import { nanoid } from 'nanoid';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact } from 'redux/contactSlice';
-
+ import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact,fetchContacts } from 'redux/operations';
+import { selectContacts, selectFilter } from 'redux/selectors';
+import { useEffect } from 'react';
 
 
 export const ContactList = () => {
-  const contacts = useSelector(state => state.contacts.contactList)
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
-  const filter = useSelector(state => state.filter.filterValue);
   const filterNormilized = filter.toLowerCase().trim();
   const visibleContacts = [...contacts].filter(contact =>
       contact.name.toLowerCase().includes(filterNormilized)
     );
-    
+  
+  	useEffect(() => {
+		dispatch(fetchContacts());
+	}, [dispatch]);
+
     return (
       <List>
           {visibleContacts.map(contact => {
